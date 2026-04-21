@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ социального такси — расширенная форма</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+            color: #1a2c3e;
+        }
+        .sub {
+            color: #2c5a6e;
+            margin-bottom: 2rem;
+            border-left: 4px solid #2c7da0;
+            padding-left: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-top: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: #0b3b4f;
+        }
+        .required::after {
+            content: " *";
+            color: #d9534f;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1rem;
+            border: 1px solid #bdc4cc;
+            border-radius: 12px;
+            transition: 0.2s;
+            background: #fff;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #2c7da0;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            background: #f9fafc;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+        }
+        .radio-group label, .checkbox-group label {
+            font-weight: normal;
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .radio-group input, .checkbox-group input {
+            width: auto;
+            margin: 0;
+        }
+        hr {
+            margin: 1.5rem 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        .checkbox-single {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-single input {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+        }
+        button {
+            width: 100%;
+            background: #2c7da0;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #1f5e7a;
+        }
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .error-message {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+        .success-message {
+            color: #166534;
+            background: #dcfce7;
+        }
+        small {
+            display: block;
+            color: #5c6f87;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        @media (max-width: 600px) {
+            .form-container { padding: 1.5rem; }
+            .radio-group { flex-direction: column; gap: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h1>🚖 Заказ социального такси</h1>
+    <div class="sub">Льготная перевозка маломобильных граждан</div>
+
+    <form id="socialTaxiForm">
+        <!-- === ОСНОВНЫЕ ДАННЫЕ === -->
+        <label class="required">ФИО</label>
+        <input type="text" id="fullname" placeholder="Иванов Иван Иванович" required>
+
+        <label class="required">СНИЛС</label>
+        <input type="text" id="snils" placeholder="123-456-789 01" required>
+
+        <label class="required">Телефон</label>
+        <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+
+        <label class="required">Категория льготы</label>
+        <select id="category" required>
+            <option value="">-- Выберите --</option>
+            <option value="disabled">Инвалид</option>
+            <option value="veteran">Ветеран</option>
+            <option value="child_disabled">Ребёнок-инвалид</option>
+            <option value="other">Иная категория</option>
+        </select>
+
+        <label class="required">Дата и время подачи</label>
+        <input type="datetime-local" id="datetime" required>
+
+        <label class="required">Откуда (адрес)</label>
+        <input type="text" id="from" placeholder="ул. Ленина, д.10" required>
+
+        <label class="required">Куда (адрес)</label>
+        <input type="text" id="to" placeholder="Поликлиника №1" required>
+
+        <!-- === ДОПОЛНИТЕЛЬНЫЕ ПОТРЕБНОСТИ === -->
+        <label>Требуется ли помощь при посадке/высадке из автомобиля</label>
+        <div class="radio-group">
+            <label><input type="radio" name="assistBoarding" value="yes"> Да, требуется</label>
+            <label><input type="radio" name="assistBoarding" value="no" checked> Не требуется</label>
+        </div>
+
+        <label>Наличие кресла-коляски</label>
+        <div class="radio-group">
+            <label><input type="radio" name="wheelchair" value="yes"> Да, с собой</label>
+            <label><input type="radio" name="wheelchair" value="no" checked> Нет</label>
+        </div>
+
+        <label>Сопровождающее лицо</label>
+        <div class="radio-group">
+            <label><input type="radio" name="accompanied" value="yes"> Да</label>
+            <label><input type="radio" name="accompanied" value="no" checked> Нет</label>
+        </div>
+
+        <label>Комментарий (доп. информация)</label>
+        <textarea id="comment" rows="2" placeholder="Нужна помощь с дверью, специальный маршрут..."></textarea>
+
+        <hr>
+
+        <!-- === ПРАВОВЫЕ ЧЕКБОКСЫ === -->
+        <div class="checkbox-single">
+            <input type="checkbox" id="docNotice" required>
+            <label for="docNotice" style="font-weight: normal;">⚠️ Уведомлен(а) о необходимости предъявления документа, удостоверяющего личность, водителю при посадке в такси</label>
+        </div>
+
+        <div class="checkbox-single">
+            <input type="checkbox" id="consent" required>
+            <label for="consent" style="font-weight: normal;">📋 Даю согласие на обработку персональных данных в соответствии с Федеральным законом №152-ФЗ</label>
+        </div>
+
+        <button type="submit">📞 Заказать социальное такси</button>
+    </form>
+    <div id="formMessage"></div>
+</div>
+
+<script>
+    (function() {
+        const form = document.getElementById('socialTaxiForm');
+        const messageDiv = document.getElementById('formMessage');
+
+        function showMessage(text, isError = false) {
+            messageDiv.innerHTML = `<div class="message ${isError ? 'error-message' : 'success-message'}">${text}</div>`;
+            setTimeout(() => {
+                if (messageDiv.innerHTML.includes(text)) {
+                    messageDiv.innerHTML = '';
+                }
+            }, 5000);
+        }
+
+        // Простая валидация СНИЛС (формат 123-456-789 01 или 12345678901)
+        function validateSnils(snils) {
+            const cleaned = snils.replace(/[\s-]/g, '');
+            if (!/^\d{11}$/.test(cleaned)) return false;
+            // Контрольная сумма (не обязательная, но базовая проверка формата)
+            return true;
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Сбор данных
+            const fullname = document.getElementById('fullname').value.trim();
+            const snilsRaw = document.getElementById('snils').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const category = document.getElementById('category').value;
+            const datetime = document.getElementById('datetime').value;
+            const fromAddr = document.getElementById('from').value.trim();
+            const toAddr = document.getElementById('to').value.trim();
+
+            // Радиокнопки
+            const assistBoarding = document.querySelector('input[name="assistBoarding"]:checked')?.value || '';
+            const wheelchair = document.querySelector('input[name="wheelchair"]:checked')?.value || '';
+            const accompanied = document.querySelector('input[name="accompanied"]:checked')?.value || '';
+
+            const comment = document.getElementById('comment').value.trim();
+            const docNotice = document.getElementById('docNotice').checked;
+            const consent = document.getElementById('consent').checked;
+
+            // === Валидация ===
+            if (!fullname) { showMessage('Укажите ФИО', true); return; }
+            if (!snilsRaw) { showMessage('Введите СНИЛС', true); return; }
+            if (!validateSnils(snilsRaw)) { showMessage('СНИЛС должен содержать 11 цифр (допустимы пробелы и дефисы)', true); return; }
+            if (!phone) { showMessage('Введите номер телефона', true); return; }
+            if (!category) { showMessage('Выберите категорию льготы', true); return; }
+            if (!datetime) { showMessage('Укажите дату и время подачи', true); return; }
+            if (!fromAddr) { showMessage('Укажите адрес "Откуда"', true); return; }
+            if (!toAddr) { showMessage('Укажите адрес "Куда"', true); return; }
+            if (!docNotice) { showMessage('Необходимо подтвердить, что вы уведомлены о документе для водителя', true); return; }
+            if (!consent) { showMessage('Требуется согласие на обработку персональных данных', true); return; }
+
+            // Формируем объект заказа
+            const orderData = {
+                fullname: fullname,
+                snils: snilsRaw.replace(/[\s-]/g, ''),
+                phone: phone,
+                category: category,
+                datetime: datetime,
+                route: {
+                    from: fromAddr,
+                    to: toAddr
+                },
+                needs: {
+                    boardingAssistance: assistBoarding === 'yes',
+                    wheelchairPresent: wheelchair === 'yes',
+                    companion: accompanied === 'yes'
+                },
+                comment: comment || '',
+                confirmations: {
+                    idDocumentNotified: true,
+                    personalDataConsent: true
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            // Здесь выводим в консоль для отладки
+            console.log('📦 Отправка заказа социального такси:', orderData);
+
+            // ========== РЕАЛЬНАЯ ОТПРАВКА НА API ==========
+            // Раскомментируйте блок ниже и укажите ваш эндпоинт
+            /*
+            try {
+                const response = await fetch('https://ваш-сервер.ru/api/social-taxi/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                if (response.ok) {
+                    showMessage('✅ Заказ успешно принят! Водитель свяжется с вами.');
+                    form.reset();
+                    // Сбросим радиокнопки к значениям по умолчанию
+                    document.querySelector('input[name="assistBoarding"][value="no"]').checked = true;
+                    document.querySelector('input[name="wheelchair"][value="no"]').checked = true;
+                    document.querySelector('input[name="accompanied"][value="no"]').checked = true;
+                    document.getElementById('docNotice').checked = false;
+                    document.getElementById('consent').checked = false;
+                } else {
+                    const errorText = await response.text();
+                    showMessage(`❌ Ошибка сервера: ${response.status}`, true);
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ Не удалось отправить заказ. Проверьте соединение.', true);
+            }
+            */
+
+            // Сейчас — демо-режим (заглушка)
+            showMessage('🎫 [ТЕСТ] Заказ сформирован. В реальном режиме отправляется на сервер. Проверьте консоль браузера.');
+            // Можно опционально очистить форму (но для демо оставим, чтобы вы видели введённые данные)
+            // Если нужно очистить — раскомментируйте:
+            // form.reset();
+            // document.querySelector('input[name="assistBoarding"][value="no"]').checked = true;
+            // document.querySelector('input[name="wheelchair"][value="no"]').checked = true;
+            // document.querySelector('input[name="accompanied"][value="no"]').checked = true;
+        });
+    })();
+</script>
+</body>
+</html>
